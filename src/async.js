@@ -38,6 +38,11 @@ const spawnIDs = function () {
     return _.map(spawns, (spawn) => spawn.id);
 };
 
+const creepIDs = function () {
+    const creeps = _.filter(Game.creeps, (creep) => creep.my);
+    return _.map(creeps, (creep) => creep.id);
+};
+
 const energySources = function () {
     _.each(Game.rooms, function (room) {
         // Create and load room memory
@@ -83,7 +88,7 @@ const energySources = function () {
             sourceMem.workParts = source.energyCapacity / 600;
         }
     });
-};;;;;;;;;;;;;;
+};
 
 
 // Loaders
@@ -108,5 +113,11 @@ module.exports = {
             interval: c.updateInterval.SOURCES,
             saver: energySources
         },
+        CREEPS: {
+            key: "creeps",
+            interval: c.updateInterval.CREEPS,
+            saver: creepIDs,
+            loader: loadByID
+        }
     },
 };

@@ -1,7 +1,8 @@
 // Configurable constants
 const updateInterval = {
     SPAWNS: 60,
-    SOURCES: 1000
+    SOURCES: 1000,
+    CREEPS: 30
 };
 
 
@@ -18,6 +19,7 @@ module.exports = {
         SW: [1, -1],
         SE: [1, 1]
     },
-    DEFAULT_BODY: [WORK, CARRY, MOVE],
-    DEFAULT_PREFIX: "Creep"
+    DEFAULT_BODY: [WORK, CARRY],
+    DEFAULT_PREFIX: "Creep",
+    MAX_PARTS: 20
 };

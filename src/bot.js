@@ -1,5 +1,4 @@
-const generateName = require("helpers").generateName,
-    c = require("constants");
+const c = require("constants");
 
 const calculateCost = function (body) {
     let cost = 0;
@@ -37,7 +36,8 @@ const calculateCost = function (body) {
 };
 
 const Bot = class Bot {
-    constructor(body) {
+    constructor(body, prefix) {
+        this.prefix = prefix ? prefix : c.DEFAULT_PREFIX;
         this.body = body ? body : [];
     }
 
@@ -50,9 +50,46 @@ const Bot = class Bot {
         this.cost = calculateCost(parts);
     }
 
+    static generateName(prefix) {
+        let i = 1;
+        while (Game.creeps[prefix + " #" + i] != null)
+            i += 1;
+        return prefix + " #" + i;
+    }
+
+    generateBody(maxEnergy) {
+        const baseParts = this.body;
+        if (!baseParts) {
+            return [];
+        }
+
+        let baseBody = [];
+        baseBody = baseBody.concat(baseParts);
+
+        for (let i = 0; i < baseParts.length / 2; i++)
+            baseBody.push(MOVE);
+
+        let times = Math.floor(maxEnergy / calculateCost(baseBody));
+
+        if (times * baseBody.length > c.MAX_PARTS)
+            times = Math.floor(c.MAX_PARTS / baseBody.length);
+        else if (times == 0)
+            return [WORK, CARRY, MOVE];
+
+        let finalBody = [];
+        for (let i = 0; i < times; i++)
+            finalBody = finalBody.concat(baseBody);
+
+        finalBody.sort();
+
+        return finalBody;
+    }
+
     spawn(spawnID) {
-        this.name = generateName(c.DEFAULT_PREFIX);
-        return Game.getObjectById(spawnID).createCreep(this.body, this.name, this);
+        this.name = Bot.generateName(this.prefix);
+        const spawn = Game.getObjectById(spawnID);
+        const body = this.generateBody(spawn.energy / 1.5);
+        return Game.getObjectById(spawnID).createCreep(body, this.name);
     }
 };
 
