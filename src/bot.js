@@ -59,9 +59,7 @@ const Bot = class Bot {
 
     generateBody(maxEnergy) {
         const baseParts = this.body;
-        if (!baseParts) {
-            return [];
-        }
+        if (!baseParts) return false;
 
         let baseBody = [];
         baseBody = baseBody.concat(baseParts);
@@ -74,7 +72,7 @@ const Bot = class Bot {
         if (times * baseBody.length > c.MAX_PARTS)
             times = Math.floor(c.MAX_PARTS / baseBody.length);
         else if (times == 0)
-            return [WORK, CARRY, MOVE];
+            return false;
 
         let finalBody = [];
         for (let i = 0; i < times; i++)
@@ -89,7 +87,9 @@ const Bot = class Bot {
         this.name = Bot.generateName(this.prefix);
         const spawn = Game.getObjectById(spawnID);
         const body = this.generateBody(spawn.energy / 1.5);
-        return Game.getObjectById(spawnID).createCreep(body, this.name);
+        
+        if (body) return Game.getObjectById(spawnID).createCreep(body, this.name);
+        else return ERR_NOT_ENOUGH_ENERGY;
     }
 };
 
