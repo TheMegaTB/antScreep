@@ -17,17 +17,13 @@ module.exports.loop = function () {
         if (!Game.creeps[name]) delete Memory.creeps[name];
     }
 
-    // var myCreeps = _.filter(Game.creeps, (creep) => creep.my);
-    // var population_size = Object.keys(myCreeps).length;
-
     const mySpawns = async.update(async.data.SPAWNS);
     const myCreeps = async.update(async.data.CREEPS);
+    const population_size = Object.keys(myCreeps).length;
 
     const defaultBot = new Bot(c.DEFAULT_BODY);
     for (let spawn in mySpawns) {
         if (!mySpawns.hasOwnProperty(spawn)) continue;
-        spawn = mySpawns[spawn];
-
-        defaultBot.spawn(spawn.id);
+        defaultBot.spawn(mySpawns[spawn].id);
     }
 };
