@@ -17,5 +17,7 @@ module.exports = {
         NE: [-1, 1],
         SW: [1, -1],
         SE: [1, 1]
-    }
+    },
+    DEFAULT_BODY: [WORK, CARRY, MOVE],
+    DEFAULT_PREFIX: "Creep"
 };

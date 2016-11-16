@@ -1,3 +1,6 @@
+const generateName = require("helpers").generateName,
+    c = require("constants");
+
 const calculateCost = function (body) {
     let cost = 0;
     for (let part in body) {
@@ -48,7 +51,8 @@ const Bot = class Bot {
     }
 
     spawn(spawnID) {
-        Game.getObjectById(spawnID).createCreep(this.body, this.name, this);
+        this.name = generateName(c.DEFAULT_PREFIX);
+        return Game.getObjectById(spawnID).createCreep(this.body, this.name, this);
     }
 };
 
